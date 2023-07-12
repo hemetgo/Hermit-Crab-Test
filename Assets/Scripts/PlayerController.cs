@@ -91,7 +91,7 @@ public class PlayerController : Character
 	}
 
     #region Inputs
-    float swipeTolerance = .99f;
+    float swipeTolerance = .5f;
 	Vector2 firstPressPos;
     Vector2 secondPressPos;
     Vector2 currentSwipe;

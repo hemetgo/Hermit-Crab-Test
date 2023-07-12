@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-	[SerializeField] float currentHealth;
+	[SerializeField] Material hitMaterial;
+
+	bool isTakingKnockback;
+
+	SpriteRenderer spriteRenderer;
 
 	protected override void Start()
 	{
 		base.Start();
+
+		spriteRenderer = GetComponent<SpriteRenderer>();
 		SwitchDirection(Random.value < .5f ? Direction.Right : Direction.Left);
 	}
 
@@ -16,29 +22,49 @@ public class Enemy : Character
 	{
 		base.Update();
 
+		if (isTakingKnockback) return;
+
 		Movement();
 	}
 
-	public void TakeDamage(float damage)
+	IEnumerator ApplyKnockback(Vector2 direction, float force, float knockbackTimeOut)
 	{
-		currentHealth -= damage;
+		isTakingKnockback = true;
+		rb.velocity = direction * force;
 
-		if (currentHealth <= 0)
-		{
-			Die();
-		}
+		yield return new WaitForSeconds(knockbackTimeOut);
+
+		isTakingKnockback = false;
 	}
 
-	void Die()
+	IEnumerator ApplyDamageFeedback(float feedbackTimeOut)
 	{
-		Destroy(gameObject);
+		Material defaultMaterial = spriteRenderer.material;
+		spriteRenderer.material = hitMaterial;
+
+		yield return new WaitForSeconds(feedbackTimeOut);
+
+		spriteRenderer.material = defaultMaterial;
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
+		// Switches enemy movement direction on collide with walls
 		if (collision.CompareTag("Wall"))
 		{
 			SwitchDirection(horizontalDirection == 1 ? Direction.Left : Direction.Right);
+		}
+		else if (collision.CompareTag("PlayerProjectile"))
+		{
+			PlayerProjectile projectile = collision.GetComponent<PlayerProjectile>();
+			projectile.OnHitted();
+
+			TakeDamage(projectile.Damage);
+			StartCoroutine(ApplyDamageFeedback(.15f));
+
+			Vector2 knockbackDirection = transform.position.x < collision.transform.position.x ? Vector2.left : Vector2.right;
+			knockbackDirection.y = 1;
+			StartCoroutine(ApplyKnockback(knockbackDirection, 5, .15f));
 		}
 	}
 }

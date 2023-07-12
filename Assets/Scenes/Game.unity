@@ -4211,6 +4211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1604290952275802002}
   - component: {fileID: 1604290952275802003}
+  - component: {fileID: 1604290952275802004}
   - component: {fileID: 1604290952275802000}
   - component: {fileID: 1604290952275802001}
   - component: {fileID: 1604290952275801998}
@@ -4361,7 +4362,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   groundCollider: {fileID: 1604290952741086678}
-  currentHealth: 10
+  hitMaterial: {fileID: 2100000, guid: 8ef2971c1b41d9843b419874adfb2994, type: 2}
+--- !u!114 &1604290952275802004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604290952275801996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae2b6a13d48c57c4daf1098e0222173b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
 --- !u!61 &1604290952741086678
 BoxCollider2D:
   m_ObjectHideFlags: 0

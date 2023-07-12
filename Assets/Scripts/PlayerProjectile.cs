@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerProjectile : MonoBehaviour
 {
 	float damage;
+	public float Damage { get => damage; }
 
     public void Setup(Vector2 direction, float speed, float damage)
 	{
@@ -14,19 +15,14 @@ public class PlayerProjectile : MonoBehaviour
 		GetComponent<SpriteRenderer>().flipX = direction.x < 0;
 	}
 
-	void OnHitted()
+	public void OnHitted()
 	{
 		Destroy(gameObject);
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.CompareTag("Enemy"))
-		{
-			Enemy enemy = collision.GetComponent<Enemy>();
-			enemy.TakeDamage(damage);
-		}
-		else if (collision.CompareTag("Wall"))
+		if (collision.CompareTag("Wall"))
 		{
 			OnHitted();
 		}
