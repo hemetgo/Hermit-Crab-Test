@@ -3,81 +3,108 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Character
 {
-    [SerializeField] float moveSpeed;
+    [Header("Player Settings")]
     [SerializeField] float jumpForce;
 
-    float horizontalInput;
+    [Header("Attack")]
+    [SerializeField] float projectileDamage;
+    [SerializeField] float projectileSpeed;
+    [SerializeField] Transform firePoint;
+    [SerializeField] PlayerProjectile projectilePrefab;
+    [SerializeField] GameObject muzzlePrefab;
+    float isFiringCooldown = .3f;
+    float  isFiringTimer;
 
-    Rigidbody2D rb;
-    SpriteRenderer spriteRenderer;
-    Animator animator;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
 #if UNITY_EDITOR
-        MouseSwipe();
+        MouseInput();
 #endif
 #if UNITY_ANDROID
-        TouchSwipe();
+        TouchInput();
 #endif
 
         Movement();
+        FiringReset();
     }
 
-    void Movement()
+    // Moves the player on the horizontal axis and control his animations
+    protected override void Movement()
 	{
-        rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
+        // Stop and return if is firing
+        if (isFiringTimer > 0)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
 
-        if (rb.velocity.x < 0) spriteRenderer.flipX = true;
-        else if (rb.velocity.x > 0) spriteRenderer.flipX = false;
+        base.Movement();
 
-        animator.SetBool("IsMoving", horizontalInput != 0);
-        animator.SetBool("OnAir", OnAir());
+        // Animations
+        animator.SetBool("IsMoving", horizontalDirection != 0);
+        animator.SetBool("OnGround", OnGround());
     }
 
+    // Make the player jump
     void Jump()
 	{
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
 	}
 
+    // Call the function that makes the player fall off the platform
     void FallThrough()
 	{
-
+        StartCoroutine(FallThroughRoutine(.25f));
     }
 
-    bool OnAir()
+    // Makes the player fall off the platform
+    IEnumerator FallThroughRoutine(float fallTime)
 	{
-        return !Physics2D.Raycast(transform.position, -transform.up, .1f, LayerMask.GetMask("Ground"));
+        groundCollider.enabled = false;
+        yield return new WaitForSeconds(fallTime);
+        groundCollider.enabled = true;
 	}
 
-    void SwitchDirection(Direction direction)
-	{
-        horizontalInput = direction == Direction.Right ? 1 : -1;
+    IEnumerator Fire()
+    {
+        if (OnGround() && isFiringTimer <= 0)
+        {
+            isFiringTimer = isFiringCooldown;
+            animator.SetTrigger("Fire");
 
+            yield return new WaitForSeconds(.1f);
+
+            Vector2 direction = horizontalDirection < 0 ? Vector2.left : Vector2.right;
+
+            PlayerProjectile projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+            projectile.Setup(direction, projectileSpeed, projectileDamage);
+            Destroy(Instantiate(muzzlePrefab, firePoint.position, Quaternion.identity), .2f);
+        }
     }
 
-    //inside class
-    Vector2 firstPressPos;
+    void FiringReset()
+	{
+        isFiringTimer -= Time.deltaTime;
+	}
+
+    #region Inputs
+    float swipeTolerance = .99f;
+	Vector2 firstPressPos;
     Vector2 secondPressPos;
     Vector2 currentSwipe;
-    public void TouchSwipe()
+
+    // Controls touch interactions
+    void TouchInput()
     {
         if (Input.touches.Length > 0)
         {
             Touch t = Input.GetTouch(0);
             if (t.phase == TouchPhase.Began)
             {
+
                 //save began touch 2d point
                 firstPressPos = new Vector2(t.position.x, t.position.y);
             }
@@ -93,30 +120,36 @@ public class PlayerController : MonoBehaviour
                 currentSwipe.Normalize();
 
                 //swipe upwards
-                if (currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+                if (currentSwipe.y > 0 && currentSwipe.x > -swipeTolerance && currentSwipe.x < swipeTolerance)
                 {
                     Jump();
                 }
                 //swipe down
-                if (currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+                if (currentSwipe.y < 0 && currentSwipe.x > -swipeTolerance && currentSwipe.x < swipeTolerance)
                 {
                     FallThrough();
                 }
                 //swipe left
-                if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+                if (currentSwipe.x < 0 && currentSwipe.y > -swipeTolerance && currentSwipe.y < swipeTolerance)
                 {
                     SwitchDirection(Direction.Left);
                 }
                 //swipe right
-                if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+                if (currentSwipe.x > 0 && currentSwipe.y > -swipeTolerance && currentSwipe.y < swipeTolerance)
                 {
                     SwitchDirection(Direction.Right);
+                }
+                // tap
+                else
+                {
+                    StartCoroutine(Fire());
                 }
             }
         }
     }
 
-    public void MouseSwipe()
+    // Controls mouse interactions
+    void MouseInput()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -135,27 +168,33 @@ public class PlayerController : MonoBehaviour
             currentSwipe.Normalize();
 
             //swipe upwards
-            if (currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+            if (currentSwipe.y > 0 && currentSwipe.x > -swipeTolerance && currentSwipe.x < swipeTolerance)
             {
                 Jump();
             }
             //swipe down
-            else if (currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+            else if (currentSwipe.y < 0 && currentSwipe.x > -swipeTolerance && currentSwipe.x < swipeTolerance)
             {
                 FallThrough();
             }
             //swipe left
-            else if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+            else if (currentSwipe.x < 0 && currentSwipe.y > -swipeTolerance && currentSwipe.y < swipeTolerance)
             {
                 SwitchDirection(Direction.Left);
             }
             //swipe right
-            else if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+            else if (currentSwipe.x > 0 && currentSwipe.y > -swipeTolerance && currentSwipe.y < swipeTolerance)
             {
                 SwitchDirection(Direction.Right);
             }
+            // tap
+			else
+			{
+                StartCoroutine(Fire());
+            }
         }
     }
+	#endregion
 }
 
 public enum Direction
