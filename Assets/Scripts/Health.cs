@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthController : MonoBehaviour
+public sealed class Health : MonoBehaviour
 {
     [SerializeField] float maxHealth;
     float currentHealth;
@@ -14,13 +14,13 @@ public class HealthController : MonoBehaviour
 	}
 
 	// Decrease current health
-	public void TakeDamage(float damageValue)
+	public void DecreaseCurrentHealth(float damageValue)
 	{
         currentHealth -= damageValue;
 	}
 
 	// Restore current health
-    public void Heal(float healValue)
+    public void IncreaseCurrentHealth(float healValue)
 	{
         currentHealth += healValue;
 

@@ -4218,7 +4218,7 @@ GameObject:
   - component: {fileID: 1604290952275801999}
   m_Layer: 0
   m_Name: Zombie1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4362,6 +4362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   groundCollider: {fileID: 1604290952741086678}
+  damage: 1
   hitMaterial: {fileID: 2100000, guid: 8ef2971c1b41d9843b419874adfb2994, type: 2}
 --- !u!114 &1604290952275802004
 MonoBehaviour:
@@ -4372,10 +4373,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1604290952275801996}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae2b6a13d48c57c4daf1098e0222173b, type: 3}
+  m_Script: {fileID: 11500000, guid: 9448bbdbe9fd8684c96b05ec87fc8690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 5
 --- !u!61 &1604290952741086678
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4441,29 +4442,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2422990908945281482, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.525
-      objectReference: {fileID: 0}
-    - target: {fileID: 2422990908945281482, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.902
+    - target: {fileID: 7297345578861891808, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
+      propertyPath: m_Size.x
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 7297345579327177380, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7297345579327177380, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7297345579327177380, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7297345579327177380, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7297345579327177380, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4506,24 +4491,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7297345579327177381, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
-      propertyPath: muzzlePrefab
-      value: 
-      objectReference: {fileID: 7002152689484805764, guid: 3ae73bd5f12d40c44bbbca7a684ec584, type: 3}
-    - target: {fileID: 7297345579327177401, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
-      propertyPath: m_Size.x
-      value: 0.6513313
-      objectReference: {fileID: 0}
-    - target: {fileID: 7297345579327177401, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
-      propertyPath: m_Size.y
-      value: 1.4297266
-      objectReference: {fileID: 0}
-    - target: {fileID: 7297345579327177401, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
-      propertyPath: m_Offset.x
-      value: -0.067652166
-      objectReference: {fileID: 0}
-    - target: {fileID: 7297345579327177401, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
-      propertyPath: m_Offset.y
-      value: 0.8836837
+      propertyPath: projectileDamage
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7297345579327177402, guid: c14dd710c9e8d4e47994e2639b5b19fc, type: 3}
       propertyPath: m_Name

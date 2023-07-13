@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public abstract class Character : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] protected float moveSpeed;
@@ -11,15 +11,17 @@ public class Character : MonoBehaviour
 
     // Components
     protected Rigidbody2D rb;
+    protected SpriteRenderer spriteRenderer;
     protected Animator animator;
-    protected HealthController health;
+    protected Health health;
 
     protected virtual void Start()
     {
         // Assign the components
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        health = GetComponent<HealthController>();
+        health = GetComponent<Health>();
     }
 
     protected virtual void Update()
@@ -47,7 +49,7 @@ public class Character : MonoBehaviour
     // Decrease character health
     public virtual void TakeDamage(float damageValue)
 	{
-        health.TakeDamage(damageValue);
+        health.DecreaseCurrentHealth(damageValue);
 
         if (health.IsDead())
 		{
@@ -58,7 +60,7 @@ public class Character : MonoBehaviour
     // Restore character health
     public virtual void Heal(float healValue)
 	{
-        health.Heal(healValue);
+        health.IncreaseCurrentHealth(healValue);
 	}
 
     // Responsible for the character die behaviour

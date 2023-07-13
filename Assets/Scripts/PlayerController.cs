@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using HemetToolkit;
 
 public class PlayerController : Character
 {
     [Header("Player Settings")]
     [SerializeField] float jumpForce;
+    float invulnerableTime = .35f;
+    bool isInvulnerable;
 
     [Header("Attack")]
     [SerializeField] float projectileDamage;
@@ -16,7 +19,6 @@ public class PlayerController : Character
     [SerializeField] GameObject muzzlePrefab;
     float isFiringCooldown = .3f;
     float  isFiringTimer;
-
 
     protected override void Update()
     {
@@ -194,7 +196,26 @@ public class PlayerController : Character
             }
         }
     }
-	#endregion
+    #endregion
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy") && !isInvulnerable)
+        {
+            Enemy enemy = collision.GetComponent<Enemy>();
+
+            TakeDamage(enemy.Damage);
+            isInvulnerable = true;
+            StartCoroutine(SpriteRendererToolkit.Blink(spriteRenderer, invulnerableTime, .05f));
+            StartCoroutine(SetVulnerable());
+        }
+    }
+
+    IEnumerator SetVulnerable()
+    {
+        yield return new WaitForSeconds(invulnerableTime);
+        isInvulnerable = false;
+    }
 }
 
 public enum Direction

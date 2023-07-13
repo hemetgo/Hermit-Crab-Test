@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class Enemy : Character
 {
+	[SerializeField] float damage;
+	public float Damage { get => damage; }
 	[SerializeField] Material hitMaterial;
 
 	bool isTakingKnockback;
-
-	SpriteRenderer spriteRenderer;
 
 	protected override void Start()
 	{
 		base.Start();
 
-		spriteRenderer = GetComponent<SpriteRenderer>();
 		SwitchDirection(Random.value < .5f ? Direction.Right : Direction.Left);
 	}
 
