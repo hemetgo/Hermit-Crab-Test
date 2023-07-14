@@ -23,7 +23,12 @@ public class PlayerController : Character
     protected override void Update()
     {
 #if UNITY_EDITOR
-        MouseInput();
+        //MouseInput();
+        if (Input.GetKeyDown(KeyCode.UpArrow)) Jump();
+        if (Input.GetKeyDown(KeyCode.DownArrow)) FallThrough();
+        if (Input.GetKeyDown(KeyCode.RightArrow)) SwitchDirection(Direction.Right);
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) SwitchDirection(Direction.Left);
+        if (Input.GetKeyDown(KeyCode.Space)) StartCoroutine(Fire());
 #endif
 #if UNITY_ANDROID
         TouchInput();

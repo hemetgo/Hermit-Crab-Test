@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class Enemy : Character
 {
@@ -8,14 +9,10 @@ public class Enemy : Character
 	public float Damage { get => damage; }
 	[SerializeField] Material hitMaterial;
 
+	WaveManager _waveManager;
+	public WaveManager WaveManager { set => _waveManager = value; }
+
 	bool isTakingKnockback;
-
-	protected override void Start()
-	{
-		base.Start();
-
-		SwitchDirection(Random.value < .5f ? Direction.Right : Direction.Left);
-	}
 
 	protected override void Update()
 	{
@@ -44,6 +41,13 @@ public class Enemy : Character
 		yield return new WaitForSeconds(feedbackTimeOut);
 
 		spriteRenderer.material = defaultMaterial;
+	}
+
+	protected override void Die()
+	{
+		base.Die();
+
+		_waveManager.OnEnemyDied();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
