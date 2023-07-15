@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 490666168256926526}
   - component: {fileID: 490666168256926527}
   m_Layer: 0
-  m_Name: Zombie1
+  m_Name: StrongZombie
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 490666168256926524}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 490666168722735465}
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   groundCollider: {fileID: 490666168722735462}
-  damage: 1
+  damage: 2
   hitMaterial: {fileID: 2100000, guid: 8ef2971c1b41d9843b419874adfb2994, type: 2}
 --- !u!114 &490666168256926500
 MonoBehaviour:
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9448bbdbe9fd8684c96b05ec87fc8690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
+  maxHealth: 15
 --- !u!212 &490666168256926496
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -109,7 +109,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 71985945c5d85a14f962ec6a3f69799c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.68038833, g: 0.11764703, b: 0.8, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

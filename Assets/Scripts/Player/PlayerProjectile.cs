@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerProjectile : MonoBehaviour
 {
-	float damage;
-	public float Damage { get => damage; }
+	int damage;
+	public int Damage { get => damage; }
 
-    public void Setup(Vector2 direction, float speed, float damage)
+    public void Setup(Vector2 direction, float speed, int damage)
 	{
 		this.damage = damage;
 

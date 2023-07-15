@@ -5,14 +5,21 @@ using Zenject;
 
 public class Enemy : Character
 {
-	[SerializeField] float damage;
-	public float Damage { get => damage; }
+	[SerializeField] int damage;
+	public int Damage { get => damage; }
 	[SerializeField] Material hitMaterial;
 
-	WaveManager _waveManager;
-	public WaveManager WaveManager { set => _waveManager = value; }
+	WaveManager waveManager;
+	public WaveManager WaveManager { set => waveManager = value; }
 
 	bool isTakingKnockback;
+
+	protected override void Start()
+	{
+		base.Start();
+
+		SwitchDirection(Random.value > .5f ? Direction.Right : Direction.Left);
+	}
 
 	protected override void Update()
 	{
@@ -47,7 +54,24 @@ public class Enemy : Character
 	{
 		base.Die();
 
-		_waveManager.OnEnemyDied();
+		waveManager.OnEnemyDied(this);
+	}
+
+	protected override void AcidFall()
+	{
+		if (transform.position.y < -8)
+		{
+			waveManager.ReplaceEnemy(this);
+			SwitchDirection(Random.value > .5f ? Direction.Right : Direction.Left);
+			IncreasePower();
+		}
+	}
+
+	void IncreasePower()
+	{
+		moveSpeed++;
+		defaultScale += .15f;
+		health.RestoreAllHealth();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)

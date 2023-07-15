@@ -8,15 +8,18 @@ public abstract class Character : MonoBehaviour
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected Collider2D groundCollider;
     protected float horizontalDirection;
+    protected float defaultScale;
+    public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
 
     // Components
     protected Rigidbody2D rb;
     protected SpriteRenderer spriteRenderer;
     protected Animator animator;
     protected Health health;
+    public Health Health { get => health; }
 
-    protected virtual void Start()
-    {
+	private void Awake()
+	{
         // Assign the components
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -24,8 +27,20 @@ public abstract class Character : MonoBehaviour
         health = GetComponent<Health>();
     }
 
+	protected virtual void Start()
+    {
+        // Save the default scale to flip horizontal with the fire point
+        defaultScale = transform.localScale.x;
+    }
+
     protected virtual void Update()
     {
+        AcidFall();
+    }
+
+    // If fall on acid it dies
+    protected virtual void AcidFall()
+	{
         
     }
 
@@ -36,8 +51,8 @@ public abstract class Character : MonoBehaviour
         rb.velocity = new Vector2(horizontalDirection * moveSpeed, rb.velocity.y);
 
         // Sprite renderer
-        if (rb.velocity.x < 0) transform.localScale = new Vector3(-1, 1, 1);
-        else if (rb.velocity.x > 0) transform.localScale = new Vector3(1, 1, 1);
+        if (rb.velocity.x < 0) transform.localScale = new Vector3(-defaultScale, defaultScale, defaultScale);
+        else if (rb.velocity.x > 0) transform.localScale = new Vector3(defaultScale, defaultScale, defaultScale);
     }
 
     // Toggle character movement direction
@@ -47,7 +62,7 @@ public abstract class Character : MonoBehaviour
     }
 
     // Decrease character health
-    public virtual void TakeDamage(float damageValue)
+    public virtual void TakeDamage(int damageValue)
 	{
         health.DecreaseCurrentHealth(damageValue);
 
@@ -58,7 +73,7 @@ public abstract class Character : MonoBehaviour
 	}
 
     // Restore character health
-    public virtual void Heal(float healValue)
+    public virtual void Heal(int healValue)
 	{
         health.IncreaseCurrentHealth(healValue);
 	}

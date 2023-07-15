@@ -4,8 +4,11 @@ using UnityEngine;
 
 public sealed class Health : MonoBehaviour
 {
-    [SerializeField] float maxHealth;
-    float currentHealth;
+    [SerializeField] int maxHealth;
+    int currentHealth;
+
+	public int MaxHealth { get => maxHealth; }
+	public int CurrentHealth { get => currentHealth; }
 
 	private void Start()
 	{
@@ -14,17 +17,23 @@ public sealed class Health : MonoBehaviour
 	}
 
 	// Decrease current health
-	public void DecreaseCurrentHealth(float damageValue)
+	public void DecreaseCurrentHealth(int damageValue)
 	{
         currentHealth -= damageValue;
 	}
 
 	// Restore current health
-    public void IncreaseCurrentHealth(float healValue)
+    public void IncreaseCurrentHealth(int healValue)
 	{
         currentHealth += healValue;
 
         if (currentHealth > maxHealth) currentHealth = maxHealth;
+	}
+
+	// Restore all health
+	public void RestoreAllHealth()
+	{
+		currentHealth = maxHealth;
 	}
 
 	// Return true if is dead
