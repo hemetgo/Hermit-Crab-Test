@@ -20,6 +20,7 @@ public class PlayerHealthBar : MonoBehaviour
 		CreateTiles();
 	}
 
+	// Create hearts on UI
 	void CreateTiles()
 	{
 		for (int i = 0; i < player.Health.MaxHealth; i++)
@@ -30,6 +31,7 @@ public class PlayerHealthBar : MonoBehaviour
 		UpdateBar();
 	}
 
+	// Update hearts based on current player health
 	public void UpdateBar()
 	{
 		for (int i = 0; i < player.Health.MaxHealth; i++)

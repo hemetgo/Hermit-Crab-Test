@@ -13,6 +13,7 @@ public class Enemy : Character
 	public WaveManager WaveManager { set => waveManager = value; }
 
 	bool isTakingKnockback;
+	bool isSwitchDirectionEnabled = true;
 
 	protected override void Start()
 	{
@@ -40,6 +41,7 @@ public class Enemy : Character
 		isTakingKnockback = false;
 	}
 
+	// Change the material
 	IEnumerator ApplyDamageFeedback(float feedbackTimeOut)
 	{
 		Material defaultMaterial = spriteRenderer.material;
@@ -50,6 +52,7 @@ public class Enemy : Character
 		spriteRenderer.material = defaultMaterial;
 	}
 
+	// When dies, notify the wave manager
 	protected override void Die()
 	{
 		base.Die();
@@ -57,6 +60,7 @@ public class Enemy : Character
 		waveManager.OnEnemyDied(this);
 	}
 
+	// When fall on acid, the enemy gets stronger
 	protected override void AcidFall()
 	{
 		if (transform.position.y < -8)
@@ -67,6 +71,7 @@ public class Enemy : Character
 		}
 	}
 
+	// Makes the enemy stronger
 	void IncreasePower()
 	{
 		moveSpeed++;
@@ -76,12 +81,8 @@ public class Enemy : Character
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		// Switches enemy movement direction on collide with walls
-		if (collision.CompareTag("Wall"))
-		{
-			SwitchDirection(horizontalDirection == 1 ? Direction.Left : Direction.Right);
-		}
-		else if (collision.CompareTag("PlayerProjectile"))
+		// Take damage from projectile	
+		if (collision.CompareTag("PlayerProjectile"))
 		{
 			PlayerProjectile projectile = collision.GetComponent<PlayerProjectile>();
 			projectile.OnHitted();
@@ -92,6 +93,22 @@ public class Enemy : Character
 			Vector2 knockbackDirection = transform.position.x < collision.transform.position.x ? Vector2.left : Vector2.right;
 			knockbackDirection.y = 1;
 			StartCoroutine(ApplyKnockback(knockbackDirection, 5, .15f));
+		}
+	}
+
+	void EnableSwitchDirectionEnable()
+    {
+		isSwitchDirectionEnabled = true;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+		// Switches enemy movement direction on collide with walls
+		if (collision.CompareTag("Wall") && isSwitchDirectionEnabled)
+		{
+			SwitchDirection(horizontalDirection == 1 ? Direction.Left : Direction.Right);
+			isSwitchDirectionEnabled = false;
+			Invoke(nameof(EnableSwitchDirectionEnable), .1f);
 		}
 	}
 }

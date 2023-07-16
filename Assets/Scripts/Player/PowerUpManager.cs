@@ -65,6 +65,9 @@ public class PowerUpManager : MonoBehaviour
             case PowerUpType.IncreaseSpeed:
                 player.MoveSpeed = player.MoveSpeed + 1;
                 break;
+            case PowerUpType.IncreaseRange:
+                player.ProjectileLifetime = player.ProjectileLifetime + .25f;
+                break;
 		}
 
         Time.timeScale = 1;
@@ -83,5 +86,5 @@ public struct PowerUp
 
 public enum PowerUpType
 {
-    Heal, IncreaseSpeed, IncreaseProjectileSpeed, IncreaseDamage,
+    Heal, IncreaseSpeed, IncreaseProjectileSpeed, IncreaseDamage, IncreaseRange
 }

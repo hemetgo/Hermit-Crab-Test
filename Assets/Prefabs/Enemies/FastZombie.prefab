@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6935644a8887d5d44a0967a0de34e633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2.5
+  moveSpeed: 6
   groundCollider: {fileID: 490666168722735462}
   damage: 2
   hitMaterial: {fileID: 2100000, guid: 8ef2971c1b41d9843b419874adfb2994, type: 2}
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9448bbdbe9fd8684c96b05ec87fc8690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 13
 --- !u!212 &490666168256926496
 SpriteRenderer:
   m_ObjectHideFlags: 0

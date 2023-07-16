@@ -16,6 +16,7 @@ public class Player : Character
     [Header("Attack")]
     [SerializeField] int projectileDamage;
     [SerializeField] float projectileSpeed;
+    [SerializeField] float projectileLifetime;
     [SerializeField] Transform firePoint;
     [SerializeField] PlayerProjectile projectilePrefab;
     [SerializeField] GameObject muzzlePrefab;
@@ -27,12 +28,8 @@ public class Player : Character
 
     public int ProjectileDamage { get => projectileDamage; set => projectileDamage = value; }
     public float ProjectileSpeed { get => projectileSpeed; set => projectileSpeed = value; }
+    public float ProjectileLifetime { get => projectileLifetime; set => projectileLifetime = value; }
 
-	protected override void Start()
-	{
-		base.Start();
-        healthBar.UpdateBar();
-	}
 
 	protected override void Update()
     {
@@ -83,6 +80,7 @@ public class Player : Character
             PlayerProjectile projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
             projectile.Setup(direction, projectileSpeed, projectileDamage);
             Destroy(Instantiate(muzzlePrefab, firePoint.position, Quaternion.identity), .2f);
+            Destroy(projectile.gameObject, projectileLifetime);
         }
     }
 
