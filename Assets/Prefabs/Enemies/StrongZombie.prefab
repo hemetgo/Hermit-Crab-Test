@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   groundCollider: {fileID: 490666168722735462}
-  damage: 2
+  damage: 1
   hitMaterial: {fileID: 2100000, guid: 8ef2971c1b41d9843b419874adfb2994, type: 2}
 --- !u!114 &490666168256926500
 MonoBehaviour:
