@@ -56,7 +56,7 @@ public abstract class Character : MonoBehaviour
     }
 
     // Toggle character movement direction
-    public void SwitchDirection(Direction direction)
+    public virtual void SwitchDirection(Direction direction)
     {
         horizontalDirection = direction == Direction.Right ? 1 : -1;
     }

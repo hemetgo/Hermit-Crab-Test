@@ -7,7 +7,7 @@ public sealed class Health : MonoBehaviour
     [SerializeField] int maxHealth;
     int currentHealth;
 
-	public int MaxHealth { get => maxHealth; }
+	public int MaxHealth { get => maxHealth; set => maxHealth = value; }
 	public int CurrentHealth { get => currentHealth; }
 
 	private void Start()

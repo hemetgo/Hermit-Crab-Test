@@ -81,6 +81,7 @@ public class Enemy : Character
 		currentLevel++;
 		moveSpeed += .5f;
 		defaultScale += .2f;
+		health.MaxHealth = health.MaxHealth + 1;
 		health.RestoreAllHealth();
 	}
 
@@ -95,7 +96,7 @@ public class Enemy : Character
 			TakeDamage(projectile.Damage);
 			StartCoroutine(ApplyDamageFeedback(.15f));
 
-			Vector2 knockbackDirection = transform.position.x < collision.transform.position.x ? Vector2.left : Vector2.right;
+			Vector2 knockbackDirection = projectile.Direction;
 			knockbackDirection.y = 1;
 			StartCoroutine(ApplyKnockback(knockbackDirection, 5, .15f));
 		}

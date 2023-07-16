@@ -17,7 +17,7 @@ public class Player : Character
     [Header("Attack")]
     [SerializeField] int projectileDamage;
     [SerializeField] float projectileSpeed;
-    [SerializeField] float projectileLifetime;
+    [SerializeField] float projectileRange;
     [SerializeField] Transform firePoint;
     [SerializeField] PlayerProjectile projectilePrefab;
     [SerializeField] GameObject muzzlePrefab;
@@ -30,7 +30,7 @@ public class Player : Character
 
     public int ProjectileDamage { get => projectileDamage; set => projectileDamage = value; }
     public float ProjectileSpeed { get => projectileSpeed; set => projectileSpeed = value; }
-    public float ProjectileLifetime { get => projectileLifetime; set => projectileLifetime = value; }
+    public float ProjectileLifetime { get => projectileRange; set => projectileRange = value; }
 
 	protected override void Update()
     {
@@ -47,7 +47,7 @@ public class Player : Character
         // Stop and return if is firing
         if (isFiringTimer > 0)
         {
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
             return;
         }
 
@@ -79,9 +79,8 @@ public class Player : Character
             Vector2 direction = horizontalDirection < 0 ? Vector2.left : Vector2.right;
 
             PlayerProjectile projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-            projectile.Setup(direction, projectileSpeed, projectileDamage);
+            projectile.Setup(direction, projectileSpeed, projectileDamage, projectileRange);
             Destroy(Instantiate(muzzlePrefab, firePoint.position, Quaternion.identity), .2f);
-            Destroy(projectile.gameObject, projectileLifetime);
         }
     }
 
@@ -89,6 +88,13 @@ public class Player : Character
 	{
         isFiringTimer -= Time.deltaTime;
 	}
+
+    public override void SwitchDirection(Direction direction)
+    {
+        if (isFiringTimer > 0) return;
+
+        base.SwitchDirection(direction);
+    }
 
     #region Inputs
     void PCInput()

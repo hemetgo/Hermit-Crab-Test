@@ -113,7 +113,7 @@ MonoBehaviour:
   jumpForce: 15
   projectileDamage: 1
   projectileSpeed: 5
-  projectileLifetime: 1
+  projectileRange: 3.5
   firePoint: {fileID: 2422990908945281482}
   projectilePrefab: {fileID: 1305513679367193169, guid: 41dbd86de381706408e363cd5971c14f, type: 3}
   muzzlePrefab: {fileID: 7002152689484805764, guid: 3ae73bd5f12d40c44bbbca7a684ec584, type: 3}
