@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using HemetToolkit;
 using Zenject;
 
+// Control the player character and his properties
 public class Player : Character
 {
     [Header("Player Settings")]
@@ -25,6 +26,7 @@ public class Player : Character
 
     [Inject] PlayerHealthBar healthBar;
     [Inject] EndScreen endScreen;
+    [Inject] PauseManager pauseManager;
 
     public int ProjectileDamage { get => projectileDamage; set => projectileDamage = value; }
     public float ProjectileSpeed { get => projectileSpeed; set => projectileSpeed = value; }
@@ -91,6 +93,8 @@ public class Player : Character
     #region Inputs
     void PCInput()
 	{
+        if (pauseManager.IsPaused) return;
+
         if (Input.GetKeyDown(KeyCode.UpArrow)) Jump();
         if (Input.GetKeyDown(KeyCode.RightArrow)) SwitchDirection(Direction.Right);
         if (Input.GetKeyDown(KeyCode.LeftArrow)) SwitchDirection(Direction.Left);

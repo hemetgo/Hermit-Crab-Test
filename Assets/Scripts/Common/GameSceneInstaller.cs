@@ -13,5 +13,6 @@ public class GameSceneInstaller : MonoInstaller<GameSceneInstaller>
 		Container.Bind<PowerUpManager>().FromComponentInHierarchy().AsSingle();
 		Container.Bind<WaveManager>().FromComponentInHierarchy().AsSingle();
 		Container.Bind<EndScreen>().FromComponentInHierarchy().AsSingle();
+		Container.Bind<PauseManager>().AsSingle();
 	}
 }

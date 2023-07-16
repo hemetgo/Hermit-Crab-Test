@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Control the player projectile
 public class PlayerProjectile : MonoBehaviour
 {
 	int damage;

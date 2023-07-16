@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
+// Is responsible to control, start and end enemies waves
 public class WaveManager : MonoBehaviour
 {
     int currentWave;
@@ -24,6 +25,7 @@ public class WaveManager : MonoBehaviour
 		StartNewWave();
 	}
 
+	// Finish the current wave when all enemies are defeateds
 	void EndWave()
 	{
 		if (currentWave == waves.Count)
@@ -37,11 +39,13 @@ public class WaveManager : MonoBehaviour
 		}
 	}
 
+	// Start a new wave
 	public void StartNewWave()
 	{
 		StartCoroutine(StartNewWaveRoutine());
 	}
 
+	// Setup the wave infos and instantiate enemies
 	IEnumerator StartNewWaveRoutine()
 	{
 		currentWave++;
@@ -55,11 +59,12 @@ public class WaveManager : MonoBehaviour
 		for (int i = 0; i < spawnCount; i++)
 		{
 			InstantiateEnemy();
-			yield return new WaitForSeconds(Random.Range(2, 3));
+			yield return new WaitForSeconds(Random.Range(2.5f, 3.5f));
 		}
 
 	}
 
+	// Instantiate an enemy
 	Enemy InstantiateEnemy()
 	{
 		EnemySpawnSettings settings = GetRandomEnemySpawnSettings();
@@ -72,6 +77,7 @@ public class WaveManager : MonoBehaviour
 		return enemy;
 	}
 
+	// Return a random enemy settings 
 	EnemySpawnSettings GetRandomEnemySpawnSettings()
 	{
 		EnemySpawnSettings settings;
@@ -91,6 +97,7 @@ public class WaveManager : MonoBehaviour
 		return settings;
 	}
 
+	// Control the end of wave and current enemies count
 	public void OnEnemyDied(Enemy enemy)
 	{
 		if (enemies.Contains(enemy))
@@ -107,12 +114,14 @@ public class WaveManager : MonoBehaviour
 		}
 	}
 
+	// Move the enemy to a random start position
 	public void ReplaceEnemy(Enemy enemy)
 	{
 		enemy.transform.position = Random.value > .5f ? leftSpawnPoint.position : rightSpawnPoint.position;
 	}
 }
 
+// Contains the properties to spawn an enemy
 public struct EnemySpawnSettings
 {
 	public Enemy enemyPrefab;

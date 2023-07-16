@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
+// Show the player health on a heart bar
 public class PlayerHealthBar : MonoBehaviour
 {
 	[Inject] Player player;

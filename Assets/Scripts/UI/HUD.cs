@@ -5,12 +5,15 @@ using TMPro;
 using Zenject;
 using UnityEngine.SceneManagement;
 
+// Show infos on canvas and contains the pause ui functions
 public class HUD : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI remainingEnemiesText;
     [SerializeField] TextMeshProUGUI currentWaveText;
 
     [SerializeField] GameObject pauseScreen;
+
+	[Inject] PauseManager pauseManager;
 
     public void UpdateRemainingEnemiesText(int remainingEnemies)
 	{
@@ -24,14 +27,12 @@ public class HUD : MonoBehaviour
 
     public void Pause()
 	{
-        pauseScreen.SetActive(true);
-        Time.timeScale = 0;
+		pauseManager.Pause(pauseScreen);
     }
 
 	public void Resume()
 	{
-		pauseScreen.SetActive(false);
-		Time.timeScale = 1;
+		pauseManager.Resume(pauseScreen);
 	}
 
 	public void RestartScene()

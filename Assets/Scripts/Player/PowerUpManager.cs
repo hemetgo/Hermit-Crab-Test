@@ -4,6 +4,7 @@ using UnityEngine;
 using Zenject;
 using HemetToolkit;
 
+// It manage the power ups and apply them on player 
 public class PowerUpManager : MonoBehaviour
 {
     [Inject] Player player;

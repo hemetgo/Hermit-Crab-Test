@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
+// Control all of enemies behaviour
 public class Enemy : Character
 {
 	[SerializeField] int damage;
