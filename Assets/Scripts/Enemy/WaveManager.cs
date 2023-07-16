@@ -17,6 +17,7 @@ public class WaveManager : MonoBehaviour
 	[Inject] HUD hud;
 	[Inject] PowerUpManager powerUpManager;
 	[Inject] EndScreen endScreen;
+	[Inject] Player player;
 
 	void Start()
 	{
@@ -32,6 +33,7 @@ public class WaveManager : MonoBehaviour
 		else
 		{
 			powerUpManager.StartPowerUp();
+			player.Stop();
 		}
 	}
 
@@ -47,7 +49,7 @@ public class WaveManager : MonoBehaviour
 		spawnCount = waves[currentWave].enemiesCount;
 		deadEnemies = 0;
 
-		hud.UpdateCurrentWave(currentWave);
+		hud.UpdateCurrentWaveText(currentWave);
 		hud.UpdateRemainingEnemiesText(spawnCount);
 
 		for (int i = 0; i < spawnCount; i++)

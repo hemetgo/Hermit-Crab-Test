@@ -10,7 +10,7 @@ public class Player : Character
     [Header("Player Settings")]
     [SerializeField] Vector3 startPosition = new Vector3(0, -5, 0);
     [SerializeField] float jumpForce;
-    float invulnerableTime = .35f;
+    float invulnerableTime = .75f;
     bool isInvulnerable;
 
     [Header("Attack")]
@@ -29,7 +29,6 @@ public class Player : Character
     public int ProjectileDamage { get => projectileDamage; set => projectileDamage = value; }
     public float ProjectileSpeed { get => projectileSpeed; set => projectileSpeed = value; }
     public float ProjectileLifetime { get => projectileLifetime; set => projectileLifetime = value; }
-
 
 	protected override void Update()
     {
@@ -90,7 +89,6 @@ public class Player : Character
 	}
 
     #region Inputs
-
     void PCInput()
 	{
         if (Input.GetKeyDown(KeyCode.UpArrow)) Jump();
@@ -108,7 +106,6 @@ public class Player : Character
 	{
         StartCoroutine(FireRoutine());
 	}
-    
 	#endregion
 
 	public override void TakeDamage(int damageValue)
@@ -139,6 +136,11 @@ public class Player : Character
     public void MoveToStartPosition()
 	{
         transform.position = startPosition;
+    }
+
+    public void Stop()
+    {
+        horizontalDirection = 0;
     }
 
     protected override void Die()

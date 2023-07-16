@@ -7,6 +7,7 @@ public class PlayerProjectile : MonoBehaviour
 	int damage;
 	public int Damage { get => damage; }
 
+	// Setup the movement from projectile
     public void Setup(Vector2 direction, float speed, int damage)
 	{
 		this.damage = damage;

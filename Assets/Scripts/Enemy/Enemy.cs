@@ -13,7 +13,8 @@ public class Enemy : Character
 	public WaveManager WaveManager { set => waveManager = value; }
 
 	bool isTakingKnockback;
-	bool isSwitchDirectionEnabled = true;
+	bool isSwitchDirectionEnabled = true; // Its prevents that enemy be locked on walls
+	int currentLevel;
 
 	protected override void Start()
 	{
@@ -67,15 +68,18 @@ public class Enemy : Character
 		{
 			waveManager.ReplaceEnemy(this);
 			SwitchDirection(Random.value > .5f ? Direction.Right : Direction.Left);
-			IncreasePower();
+			Upgrade();
 		}
 	}
 
 	// Makes the enemy stronger
-	void IncreasePower()
+	void Upgrade()
 	{
-		moveSpeed++;
-		defaultScale += .15f;
+		if (currentLevel > 3) return;
+
+		currentLevel++;
+		moveSpeed += .5f;
+		defaultScale += .2f;
 		health.RestoreAllHealth();
 	}
 
@@ -108,7 +112,7 @@ public class Enemy : Character
 		{
 			SwitchDirection(horizontalDirection == 1 ? Direction.Left : Direction.Right);
 			isSwitchDirectionEnabled = false;
-			Invoke(nameof(EnableSwitchDirectionEnable), .1f);
+			Invoke(nameof(EnableSwitchDirectionEnable), .75f);
 		}
 	}
 }

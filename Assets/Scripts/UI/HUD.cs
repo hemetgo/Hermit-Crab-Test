@@ -17,7 +17,7 @@ public class HUD : MonoBehaviour
         remainingEnemiesText.text = remainingEnemies.ToString();
 	}
 
-    public void UpdateCurrentWave(int currentWave)
+    public void UpdateCurrentWaveText(int currentWave)
 	{
         currentWaveText.text = "WAVE " + currentWave;
 	}

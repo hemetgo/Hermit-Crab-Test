@@ -16,6 +16,7 @@ public class PowerUpManager : MonoBehaviour
 
     List<PowerUpPanel> panels = new List<PowerUpPanel>();
 
+    // Allow power up choice to player
     public void StartPowerUp()
 	{
         Time.timeScale = 0;
@@ -24,6 +25,7 @@ public class PowerUpManager : MonoBehaviour
         CreatePanels();
     }
 
+    // Create random power up panels
     void CreatePanels()
 	{
         List<PowerUp> possiblePowerUps = new List<PowerUp>(powerUps);
@@ -39,6 +41,7 @@ public class PowerUpManager : MonoBehaviour
 		}
 	}
 
+    // Destroy created power up panels
     public void ClearPanels()
 	{
         foreach(PowerUpPanel panel in panels)
@@ -49,6 +52,7 @@ public class PowerUpManager : MonoBehaviour
         panels.Clear();
 	}
 
+    // Upgrade player skills
     public void ApplyPowerUp(PowerUp powerUp)
 	{
 		switch (powerUp.powerUpType)
@@ -60,7 +64,7 @@ public class PowerUpManager : MonoBehaviour
                 player.ProjectileDamage = player.ProjectileDamage + 1;
                 break;
             case PowerUpType.IncreaseProjectileSpeed:
-                player.ProjectileSpeed = player.ProjectileSpeed + 1;
+                player.ProjectileSpeed = player.ProjectileSpeed + 2.5f;
                 break;
             case PowerUpType.IncreaseSpeed:
                 player.MoveSpeed = player.MoveSpeed + 1;

@@ -27,8 +27,8 @@ public class PlayerHealthBar : MonoBehaviour
 		{
 			Image tile = Instantiate(healthTilePrefab, tilesParent);
 			healthTiles.Add(tile);
+			tile.color = filledColor;
 		}
-		UpdateBar();
 	}
 
 	// Update hearts based on current player health
